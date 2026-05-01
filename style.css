@@ -1,10 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
 :root {
-    --primary: #D4AF37; /* Asil, yormayan altın sarısı */
-    --secondary: #2C3E50; /* Koyu lacivert/antrasit */
-    --bg-light: #F8F9FA; /* Kırık beyaz arka plan */
-    --card-bg: #FFFFFF;
-    --text-dark: #333333;
-    --text-muted: #666666;
+    --primary: #16A34A;          /* Forest Green */
+    --primary-dark: #15803D;
+    --primary-light: #22C55E;
+    --primary-glow: rgba(22, 163, 74, 0.25);
+    --accent: #3B82F6;           /* Blue */
+    --accent-dark: #2563EB;
+    --bg-body: #F0FDF4;          /* Very light green */
+    --bg-card: #FFFFFF;
+    --bg-card-open: #F7FEF9;
+    --border: #D1FAE5;
+    --border-dark: #A7F3D0;
+    --text-body: #1A2E20;
+    --text-muted: #6B7280;
+    --hero-from: #14532D;
+    --hero-to: #15803D;
+    --hero-text: #FFFFFF;
 }
 
 * {
@@ -13,37 +25,119 @@
     padding: 0;
 }
 
+/* ===== ARKA PLAN CANVAS ===== */
+#bgCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    z-index: 0;
+    pointer-events: none;
+}
+
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: var(--bg-light);
-    color: var(--text-dark);
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    background-color: var(--bg-body);
+    color: var(--text-body);
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    position: relative;
+    z-index: 1;
 }
 
+/* ===== HERO ===== */
 .hero {
-    background: linear-gradient(135deg, var(--secondary) 0%, #1a252f 100%);
-    color: var(--primary);
+    background: linear-gradient(135deg, var(--hero-from) 0%, var(--hero-to) 100%);
+    color: var(--hero-text);
     text-align: center;
-    padding: 3rem 1rem;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    padding: 3rem 1rem 4rem;
+    position: relative;
+    z-index: 2;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+}
+
+.header-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+/* ===== LOGO ===== */
+.hero-logo {
+    width: 70px;
+    height: 70px;
+    object-fit: contain;
+    vertical-align: middle;
+    background: #ffffff;
+    border-radius: 50%;
+    padding: 8px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.3), 0 0 0 2px rgba(255,255,255,0.2);
+}
+
+.hero h1 {
+    font-size: clamp(1.6rem, 5vw, 2.4rem);
+    font-weight: 800;
+    color: #FFFFFF;
+    letter-spacing: -0.5px;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
 
 .hero p {
-    color: #fff;
-    margin-top: 10px;
-    font-size: 1.1rem;
+    font-size: 1.05rem;
+    color: rgba(255,255,255,0.85);
+    margin-top: 4px;
 }
 
+/* ===== DİL SEÇİCİ ===== */
+.lang-switcher {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 20px;
+}
+
+.lang-btn {
+    background: rgba(255,255,255,0.12);
+    border: 1.5px solid rgba(255,255,255,0.25);
+    color: #fff;
+    padding: 6px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: background 0.2s, border-color 0.2s, transform 0.15s;
+    font-family: inherit;
+}
+
+.lang-btn:hover {
+    background: rgba(255,255,255,0.22);
+    border-color: rgba(255,255,255,0.5);
+    transform: translateY(-1px);
+}
+
+.lang-btn.active {
+    background: var(--primary-light);
+    border-color: var(--primary-light);
+    color: #fff;
+}
+
+/* ===== CONTAINER ===== */
 .container {
     flex: 1;
     max-width: 800px;
     margin: 0 auto;
     width: 100%;
     padding: 0 15px;
+    position: relative;
+    z-index: 2;
 }
 
+/* ===== ANA BUTON ===== */
 .action-area {
     display: flex;
     justify-content: center;
@@ -51,30 +145,37 @@ body {
 }
 
 .primary-btn {
-    background-color: var(--primary);
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
     color: #fff;
     border: none;
     padding: 15px 35px;
-    font-size: 1.1rem;
-    font-weight: 600;
+    font-size: 1.05rem;
+    font-weight: 700;
     border-radius: 50px;
     cursor: pointer;
-    box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
-    transition: all 0.3s ease;
+    box-shadow: 0 6px 20px var(--primary-glow);
+    transition: transform 0.2s, box-shadow 0.2s;
     display: flex;
     align-items: center;
     gap: 10px;
+    font-family: inherit;
+    letter-spacing: 0.2px;
 }
 
 .primary-btn:hover {
     transform: translateY(-2px);
-    background-color: #c5a02c;
+    box-shadow: 0 10px 28px var(--primary-glow);
 }
 
+.primary-btn:active {
+    transform: translateY(0);
+}
+
+/* ===== GRID ===== */
 .grid-layout {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 15px;
+    gap: 12px;
     padding-bottom: 40px;
 }
 
@@ -82,102 +183,307 @@ body {
     text-align: center;
     color: var(--text-muted);
     font-style: italic;
-    padding: 20px;
+    padding: 40px 20px;
+    font-size: 1rem;
 }
 
-/* KART TASARIMI */
+/* ===== KART ===== */
 .place-card {
-    background: var(--card-bg);
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    background: var(--bg-card);
+    border-radius: 14px;
+    border: 1.5px solid var(--border);
     overflow: hidden;
-    transition: transform 0.2s;
+    transition: transform 0.22s, box-shadow 0.22s, border-color 0.22s;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    position: relative;
+    z-index: 2;
 }
 
+.place-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(22,163,74,0.12);
+    border-color: var(--border-dark);
+}
+
+.place-card.open {
+    border-color: var(--primary);
+    box-shadow: 0 6px 24px var(--primary-glow);
+}
+
+/* ===== KART BAŞLIĞI ===== */
 .place-header {
-    padding: 18px 20px;
+    padding: 16px 18px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     cursor: pointer;
-    background-color: #fff;
-    border-left: 4px solid var(--primary);
+    background: #fff;
+    border-left: 4px solid var(--primary-light);
+    transition: background 0.18s, border-left-color 0.22s;
+    user-select: none;
 }
 
-.place-header:hover {
-    background-color: #fdfbf5;
+.place-card.open .place-header {
+    background: #F0FDF4;
+    border-left-color: var(--primary);
+}
+
+.place-header:active {
+    transform: scale(0.99);
 }
 
 .place-title {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: var(--secondary);
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1A2E20;
+    transition: color 0.2s;
+    flex: 1;
+    min-width: 0;
+    padding-right: 8px;
+}
+
+.place-card.open .place-title {
+    color: var(--primary-dark);
+}
+
+.place-header-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
 }
 
 .place-distance {
-    background: #f0f0f0;
-    padding: 5px 10px;
+    background: #ECFDF5;
+    border: 1px solid #A7F3D0;
+    padding: 4px 10px;
     border-radius: 20px;
-    font-size: 0.9rem;
-    font-weight: bold;
-    color: var(--secondary);
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+    white-space: nowrap;
 }
 
+/* Chevron oku */
+.chevron {
+    display: inline-block;
+    font-style: normal;
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    transition: transform 0.28s cubic-bezier(0.34,1.56,0.64,1), color 0.22s;
+    line-height: 1;
+}
+
+.place-card.open .chevron {
+    transform: rotate(180deg);
+    color: var(--primary);
+}
+
+/* ===== KART İÇERİK ===== */
 .place-content {
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.3s ease-out;
-    background: #fafafa;
+    transition: max-height 0.38s cubic-bezier(0.4,0,0.2,1);
+    background: var(--bg-card-open);
 }
 
 .place-content.active {
-    max-height: 400px; /* İçeriğin açılması için */
-    border-top: 1px solid #eee;
+    max-height: 600px;
+    border-top: 1px solid var(--border);
 }
 
 .content-inner {
-    padding: 20px;
+    padding: 18px 18px 16px;
 }
 
 .content-inner p {
-    margin-bottom: 15px;
-    line-height: 1.6;
-    color: var(--text-muted);
-    font-size: 0.95rem;
+    margin-bottom: 12px;
+    line-height: 1.65;
+    color: #374151;
+    font-size: 0.92rem;
 }
 
-.action-links {
+/* ===== KART GÖRSELLERİ ===== */
+.card-images {
     display: flex;
     gap: 10px;
+    margin-bottom: 14px;
     flex-wrap: wrap;
 }
 
+.card-img {
+    width: 150px;
+    height: 110px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 2px solid var(--border);
+    cursor: pointer;
+    transition: transform 0.22s, border-color 0.22s, box-shadow 0.22s;
+}
+
+.card-img:hover {
+    transform: scale(1.05);
+    border-color: var(--primary);
+    box-shadow: 0 4px 12px var(--primary-glow);
+}
+
+/* ===== AKSİYON LİNKLER ===== */
+.action-links { display: flex; gap: 10px; flex-wrap: wrap; }
+
 .btn-nav, .btn-video {
     text-decoration: none;
-    padding: 10px 15px;
+    padding: 9px 15px;
     border-radius: 8px;
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     font-weight: 600;
     text-align: center;
     flex: 1;
-    min-width: 120px;
+    min-width: 110px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: transform 0.15s, opacity 0.15s;
+    font-family: inherit;
+}
+
+.btn-nav:hover, .btn-video:hover {
+    transform: translateY(-1px);
+    opacity: 0.9;
 }
 
 .btn-nav {
-    background: var(--primary);
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
     color: #fff;
 }
 
 .btn-video {
-    background: var(--secondary);
+    background: linear-gradient(135deg, #DC2626 0%, #B91C1C 100%);
     color: #fff;
 }
 
+/* ===== DAHA FAZLA BUTONU ===== */
+.show-more-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 13px 20px;
+    border: 2px dashed var(--border-dark);
+    border-radius: 12px;
+    background: transparent;
+    color: var(--primary-dark);
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s, transform 0.15s;
+    font-family: inherit;
+    margin-top: 4px;
+}
+
+.show-more-btn:hover {
+    background: #ECFDF5;
+    border-color: var(--primary);
+    transform: translateY(-1px);
+}
+
+/* ===== FOOTER ===== */
 footer {
-    background-color: var(--secondary);
-    color: var(--primary);
-    text-align: center;
-    padding: 20px;
-    font-size: 0.9rem;
+    background: var(--hero-from);
+    border-top: 1px solid rgba(255,255,255,0.07);
     margin-top: auto;
+    position: relative;
+    z-index: 2;
+}
+
+.footer-main {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 36px 20px 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 24px;
+    flex-wrap: wrap;
+}
+
+.footer-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.footer-logo {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    background: #fff;
+    border-radius: 50%;
+    padding: 6px;
+}
+
+.footer-school {
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.5;
+    max-width: 220px;
+}
+
+.footer-tagline {
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.5);
+}
+
+.footer-contact {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.footer-contact-title {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: rgba(255,255,255,0.9);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+}
+
+.footer-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #BBF7D0;
+    font-size: 0.85rem;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.footer-link:hover {
+    color: var(--primary-light);
+}
+
+.footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding: 14px 20px;
+    text-align: center;
+}
+
+.footer-bottom p {
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.4);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 600px) {
+    .hero { padding: 2rem 1rem 3rem; }
+    .hero h1 { font-size: 1.5rem; }
+    .primary-btn { font-size: 0.95rem; padding: 12px 24px; }
+    .place-header { padding: 14px 14px; }
+    .place-title { font-size: 0.92rem; }
+    .card-img { width: 130px; height: 95px; }
+    .lang-switcher { gap: 6px; }
+    .lang-btn { padding: 5px 10px; font-size: 0.78rem; }
+    .footer-main { flex-direction: column; align-items: center; text-align: center; }
+    .footer-contact { align-items: center; }
 }
