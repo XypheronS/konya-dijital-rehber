@@ -1,10 +1,24 @@
 // === i18n ===
 const i18n = {
   tr: { subtitle: 'Tarihin ve kültürün kalbine hoş geldiniz', findBtn: 'Yakınımdaki Yerleri Bul', initialMsg: 'Başlamak için butona tıklayın.', videoSearch: 'tanıtım' },
-  en: { subtitle: 'Welcome to the heart of history', findBtn: 'Find Nearby Places', initialMsg: 'Click the button to start.', videoSearch: 'tour' },
-  de: { subtitle: 'Willkommen im Herz der Geschichte', findBtn: 'Orte in der Nähe finden', initialMsg: 'Klicken Sie die Schaltfläche.', videoSearch: 'tour' },
+  en: { subtitle: 'Welcome to the heart of history and culture', findBtn: 'Find Nearby Places', initialMsg: 'Click the button to start.', videoSearch: 'tour' },
+  de: { subtitle: 'Willkommen im Herzen der Geschichte und Kultur', findBtn: 'Orte in der Nähe finden', initialMsg: 'Klicken Sie die Schaltfläche.', videoSearch: 'Tour' },
+  fr: { subtitle: 'Bienvenue au cœur de l\'histoire et de la culture', findBtn: 'Trouver les lieux proches', initialMsg: 'Cliquez sur le bouton pour commencer.', videoSearch: 'visite' },
+  es: { subtitle: 'Bienvenido al corazón de la historia y la cultura', findBtn: 'Encontrar lugares cercanos', initialMsg: 'Haga clic en el botón para comenzar.', videoSearch: 'visita' },
+  pt: { subtitle: 'Bem-vindo ao coração da história e da cultura', findBtn: 'Encontrar lugares próximos', initialMsg: 'Clique no botão para começar.', videoSearch: 'visita' },
+  ru: { subtitle: 'Добро пожаловать в сердце истории и культуры', findBtn: 'Найти ближайшие места', initialMsg: 'Нажмите кнопку для начала.', videoSearch: 'тур' },
+  uk: { subtitle: 'Ласкаво просимо до серця історії та культури', findBtn: 'Знайти найближчі місця', initialMsg: 'Натисніть кнопку для початку.', videoSearch: 'тур' },
+  ar: { subtitle: 'مرحباً بك في قلب التاريخ والثقافة', findBtn: 'ابحث عن الأماكن القريبة', initialMsg: 'انقر على الزر للبدء.', videoSearch: 'جولة' },
+  nl: { subtitle: 'Welkom in het hart van de geschiedenis en cultuur', findBtn: 'Vind nabijgelegen plaatsen', initialMsg: 'Klik op de knop om te beginnen.', videoSearch: 'rondleiding' },
   ja: { subtitle: '歴史と文化の中心へようこそ', findBtn: '近くの場所を探す', initialMsg: 'ボタンを押してください。', videoSearch: 'ツアー' },
-  zh: { subtitle: '欢迎来到历史与文化的心脏', findBtn: '查找附近地点', initialMsg: '请点击按钮。', videoSearch: '游览' }
+  zh: { subtitle: '欢迎来到历史与文化的心脏', findBtn: '查找附近地点', initialMsg: '请点击按钮开始。', videoSearch: '游览' },
+  ko: { subtitle: '역사와 문화의 심장에 오신 것을 환영합니다', findBtn: '근처 장소 찾기', initialMsg: '버튼을 클릭하여 시작하세요.', videoSearch: '투어' },
+  hi: { subtitle: 'इतिहास और संस्कृति के दिल में आपका स्वागत है', findBtn: 'नज़दीकी स्थान खोजें', initialMsg: 'शुरू करने के लिए बटन दबाएं।', videoSearch: 'दौरा' },
+  bn: { subtitle: 'ইতিহাস ও সংস্কৃতির হৃদয়ে স্বাগতম', findBtn: 'কাছের স্থান খুঁজুন', initialMsg: 'শুরু করতে বোতামে ক্লিক করুন।', videoSearch: 'ভ্রমণ' },
+  id: { subtitle: 'Selamat datang di jantung sejarah dan budaya', findBtn: 'Temukan tempat terdekat', initialMsg: 'Klik tombol untuk memulai.', videoSearch: 'tur' },
+  kk: { subtitle: 'Тарих пен мәдениет жүрегіне қош келдіңіз', findBtn: 'Жақын жерлерді табыңыз', initialMsg: 'Бастау үшін батырманы басыңыз.', videoSearch: 'экскурсия' },
+  uz: { subtitle: 'Tarix va madaniyat yuragiga xush kelibsiz', findBtn: 'Yaqin joylarni toping', initialMsg: 'Boshlash uchun tugmani bosing.', videoSearch: 'sayohat' },
+  az: { subtitle: 'Tarixin və mədəniyyətin ürəyinə xoş gəlmisiniz', findBtn: 'Yaxın yerləri tapın', initialMsg: 'Başlamaq üçün düyməni basın.', videoSearch: 'ekskursiya' }
 };
 const browserLang = (navigator.language || 'tr').slice(0,2);
 let currentLang = i18n[browserLang] ? browserLang : 'tr';
@@ -13,8 +27,11 @@ function setLang(lang) {
   if (!i18n[lang]) return;
   currentLang = lang;
   document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = t(el.dataset.i18n); });
-  document.querySelectorAll('.lang-btn').forEach(b => { b.classList.toggle('active', b.id === 'btn-' + lang); });
+  const sel = document.getElementById('langSelect');
+  if (sel) sel.value = lang;
   document.documentElement.lang = lang;
+  // RTL dil desteği (Arapça)
+  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
 }
 
 // === MEKANLAR ===
