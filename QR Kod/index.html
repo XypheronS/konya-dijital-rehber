@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Konya Dijital Rehber — QR Kod</title>
+    <link rel="icon" type="image/png" href="eagle.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #14532D 0%, #166534 55%, #15803D 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 24px;
+            padding: 40px 36px;
+            box-shadow: 0 24px 80px rgba(0, 0, 0, .35);
+            text-align: center;
+            max-width: 460px;
+            width: 100%;
+        }
+
+        .card-title {
+            font-size: 1.45rem;
+            font-weight: 800;
+            color: #14532D;
+            margin-bottom: 4px;
+        }
+
+        .card-sub {
+            font-size: .88rem;
+            color: #6B7280;
+            margin-bottom: 26px;
+        }
+
+        #qrPreview {
+            border-radius: 12px;
+            display: block;
+            margin: 0 auto 28px;
+            max-width: 100%;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, #16A34A, #22C55E);
+            color: #fff;
+            border: none;
+            padding: 14px 34px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            box-shadow: 0 6px 24px rgba(22, 163, 74, .45);
+            transition: transform .2s, box-shadow .2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(22, 163, 74, .55);
+        }
+
+        .url-note {
+            margin-top: 14px;
+            font-size: .75rem;
+            color: #9CA3AF;
+        }
+
+        .url-note code {
+            background: #F3F4F6;
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #374151;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="card">
+        <p class="card-title">🦅 Konya Dijital Rehber</p>
+        <p class="card-sub">QR Kodu tarayarak siteye ulaşın</p>
+        <canvas id="qrPreview" width="380" height="380"></canvas>
+        <button class="btn" id="downloadBtn">⬇️ PDF Olarak İndir</button>
+        <p class="url-note">Kodlanan URL: <code id="urlDisplay"></code></p>
+    </div>
+
+    <script>
+        // ── Değiştirilebilir URL ──────────────────────────────────
+        var QR_URL = 'https://konyarehber.vercel.app';
+        // ─────────────────────────────────────────────────────────
+
+        document.getElementById('urlDisplay').textContent = QR_URL;
+
+        // QR matris üret
+        var qr = qrcode(0, 'M');
+        qr.addData(QR_URL);
+        qr.make();
+        var MOD = qr.getModuleCount();
+
+
+
+        // ── Önizleme canvas ───────────────────────────────────────
+        var prev = document.getElementById('qrPreview');
+        var pCtx = prev.getContext('2d');
+
+        function renderPreview() {
+            var W = prev.width, H = prev.height;
+            pCtx.fillStyle = '#fff';
+            pCtx.fillRect(0, 0, W, H);
+
+            var margin = W * 0.05;
+            var cell = (W - 2 * margin) / MOD;
+
+            pCtx.fillStyle = '#000';
+            for (var r = 0; r < MOD; r++) {
+                for (var c = 0; c < MOD; c++) {
+                    if (qr.isDark(r, c))
+                        pCtx.fillRect(margin + c * cell, margin + r * cell, cell, cell);
+                }
+            }
+
+        }
+
+        renderPreview();
+
+        // ── PDF İndir ─────────────────────────────────────────────
+        document.getElementById('downloadBtn').addEventListener('click', function () {
+            if (!window.jspdf) {
+                alert('jsPDF henüz yüklenmedi. Lütfen internet bağlantınızı kontrol edin.');
+                return;
+            }
+
+            var doc = new window.jspdf.jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+            var PW = 210, PH = 297;
+
+            // Beyaz sayfa
+            doc.setFillColor(255, 255, 255);
+            doc.rect(0, 0, PW, PH, 'F');
+
+            // Üst yeşil çizgi
+            doc.setDrawColor(22, 163, 74);
+            doc.setLineWidth(1.2);
+            doc.line(12, 16, PW - 12, 16);
+
+            // Üst başlık
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(15);
+            doc.setTextColor(20, 83, 45);
+            doc.text('KONYA DIGITAL GUIDE', PW / 2, 27, { align: 'center' });
+
+            // ── QR Kod — doğrudan vektör dikdörtgenler (canvas/CORS YOK) ──
+            var qrMM = 150;
+            var qrX = (PW - qrMM) / 2;
+            var qrY = 38;
+            var qrMarg = qrMM * 0.04;
+            var cell = (qrMM - 2 * qrMarg) / MOD;
+
+            doc.setFillColor(255, 255, 255);
+            doc.rect(qrX, qrY, qrMM, qrMM, 'F');
+
+            doc.setFillColor(0, 0, 0);
+            for (var r = 0; r < MOD; r++) {
+                for (var c = 0; c < MOD; c++) {
+                    if (qr.isDark(r, c)) {
+                        doc.rect(
+                            qrX + qrMarg + c * cell,
+                            qrY + qrMarg + r * cell,
+                            cell, cell, 'F'
+                        );
+                    }
+                }
+            }
+
+
+            // ── Yazılar ──────────────────────────────────────────────
+            var ty = qrY + qrMM + 16;
+
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(22);
+            doc.setTextColor(20, 83, 45);
+            doc.text('Konya Digital Guide & Tour', PW / 2, ty, { align: 'center' });
+
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(13);
+            doc.setTextColor(107, 114, 128);
+            doc.text('Scan to access the guide', PW / 2, ty + 11, { align: 'center' });
+
+            doc.setFontSize(12);
+            doc.text('Rehbere ulasmak icin okutun', PW / 2, ty + 22, { align: 'center' });
+
+            doc.setFontSize(9);
+            doc.setTextColor(180, 180, 180);
+            doc.text(QR_URL, PW / 2, ty + 32, { align: 'center' });
+
+            // ── Alt çizgi + footer ───────────────────────────────────
+            doc.setDrawColor(22, 163, 74);
+            doc.setLineWidth(0.7);
+            doc.line(12, PH - 22, PW - 12, PH - 22);
+
+
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(8);
+            doc.setTextColor(150, 150, 150);
+            doc.text('KilicArslan Borsa Istanbul MTAL - 2026', 12, PH - 13);
+
+            doc.save('Konya-Dijital-Rehber-QR.pdf');
+        });
+    </script>
+</body>
+
+</html>
