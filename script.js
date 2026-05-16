@@ -168,8 +168,8 @@ function formatTime(minutes) {
 
 // === KART OLUŞTUR ===
 function createCard(p, uLat, uLng) {
-  const name = p.name[currentLang] || p.name.tr;
-  const desc = p.desc[currentLang] || p.desc.tr;
+  const name = p.name[currentLang] || p.name.en || p.name.tr;
+  const desc = p.desc[currentLang] || p.desc.en || p.desc.tr;
   const dist = calculateDistance(uLat, uLng, p.lat, p.lng);
   const walkMin = Math.round(dist * 12);
   const driveMin = Math.round(dist * 3);
