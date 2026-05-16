@@ -1,24 +1,25 @@
 // === i18n ===
+let lastUserLat = null, lastUserLng = null;
 const i18n = {
-  tr: { subtitle: 'Tarihin ve kültürün kalbine hoş geldiniz', findBtn: 'Yakınımdaki Yerleri Bul', initialMsg: 'Başlamak için butona tıklayın.', videoSearch: 'tanıtım' },
-  en: { subtitle: 'Welcome to the heart of history and culture', findBtn: 'Find Nearby Places', initialMsg: 'Click the button to start.', videoSearch: 'tour' },
-  de: { subtitle: 'Willkommen im Herzen der Geschichte und Kultur', findBtn: 'Orte in der Nähe finden', initialMsg: 'Klicken Sie die Schaltfläche.', videoSearch: 'Tour' },
-  fr: { subtitle: 'Bienvenue au cœur de l\'histoire et de la culture', findBtn: 'Trouver les lieux proches', initialMsg: 'Cliquez sur le bouton pour commencer.', videoSearch: 'visite' },
-  es: { subtitle: 'Bienvenido al corazón de la historia y la cultura', findBtn: 'Encontrar lugares cercanos', initialMsg: 'Haga clic en el botón para comenzar.', videoSearch: 'visita' },
-  pt: { subtitle: 'Bem-vindo ao coração da história e da cultura', findBtn: 'Encontrar lugares próximos', initialMsg: 'Clique no botão para começar.', videoSearch: 'visita' },
-  ru: { subtitle: 'Добро пожаловать в сердце истории и культуры', findBtn: 'Найти ближайшие места', initialMsg: 'Нажмите кнопку для начала.', videoSearch: 'тур' },
-  uk: { subtitle: 'Ласкаво просимо до серця історії та культури', findBtn: 'Знайти найближчі місця', initialMsg: 'Натисніть кнопку для початку.', videoSearch: 'тур' },
-  ar: { subtitle: 'مرحباً بك في قلب التاريخ والثقافة', findBtn: 'ابحث عن الأماكن القريبة', initialMsg: 'انقر على الزر للبدء.', videoSearch: 'جولة' },
-  nl: { subtitle: 'Welkom in het hart van de geschiedenis en cultuur', findBtn: 'Vind nabijgelegen plaatsen', initialMsg: 'Klik op de knop om te beginnen.', videoSearch: 'rondleiding' },
-  ja: { subtitle: '歴史と文化の中心へようこそ', findBtn: '近くの場所を探す', initialMsg: 'ボタンを押してください。', videoSearch: 'ツアー' },
-  zh: { subtitle: '欢迎来到历史与文化的心脏', findBtn: '查找附近地点', initialMsg: '请点击按钮开始。', videoSearch: '游览' },
-  ko: { subtitle: '역사와 문화의 심장에 오신 것을 환영합니다', findBtn: '근처 장소 찾기', initialMsg: '버튼을 클릭하여 시작하세요.', videoSearch: '투어' },
-  hi: { subtitle: 'इतिहास और संस्कृति के दिल में आपका स्वागत है', findBtn: 'नज़दीकी स्थान खोजें', initialMsg: 'शुरू करने के लिए बटन दबाएं।', videoSearch: 'दौरा' },
-  bn: { subtitle: 'ইতিহাস ও সংস্কৃতির হৃদয়ে স্বাগতম', findBtn: 'কাছের স্থান খুঁজুন', initialMsg: 'শুরু করতে বোতামে ক্লিক করুন।', videoSearch: 'ভ্রমণ' },
-  id: { subtitle: 'Selamat datang di jantung sejarah dan budaya', findBtn: 'Temukan tempat terdekat', initialMsg: 'Klik tombol untuk memulai.', videoSearch: 'tur' },
-  kk: { subtitle: 'Тарих пен мәдениет жүрегіне қош келдіңіз', findBtn: 'Жақын жерлерді табыңыз', initialMsg: 'Бастау үшін батырманы басыңыз.', videoSearch: 'экскурсия' },
-  uz: { subtitle: 'Tarix va madaniyat yuragiga xush kelibsiz', findBtn: 'Yaqin joylarni toping', initialMsg: 'Boshlash uchun tugmani bosing.', videoSearch: 'sayohat' },
-  az: { subtitle: 'Tarixin və mədəniyyətin ürəyinə xoş gəlmisiniz', findBtn: 'Yaxın yerləri tapın', initialMsg: 'Başlamaq üçün düyməni basın.', videoSearch: 'ekskursiya' }
+  tr: { subtitle: 'Tarihin ve kültürün kalbine hoş geldiniz', findBtn: 'Yakınımdaki Yerleri Bul', initialMsg: 'Başlamak için butona tıklayın.', videoSearch: 'tanıtım', infoLabel: 'Bilgi', durationLabel: 'Süre', walking: 'Yürüyerek', byCar: 'Araçla', directions: 'Yol Tarifi', watchVideo: 'Video İzle', locating: 'Konumunuz bulunuyor...', locError: 'Konum alınamadı. Lütfen konum iznini kontrol edin.', showMore: 'Daha Fazla Mekan Göster', noSupport: 'Tarayıcınız konum özelliğini desteklemiyor.' },
+  en: { subtitle: 'Welcome to the heart of history and culture', findBtn: 'Find Nearby Places', initialMsg: 'Click the button to start.', videoSearch: 'tour', infoLabel: 'Info', durationLabel: 'Duration', walking: 'Walking', byCar: 'By Car', directions: 'Get Directions', watchVideo: 'Watch Video', locating: 'Finding your location...', locError: 'Could not get location. Please check location permission.', showMore: 'Show More Places', noSupport: 'Your browser does not support geolocation.' },
+  de: { subtitle: 'Willkommen im Herzen der Geschichte und Kultur', findBtn: 'Orte in der Nähe finden', initialMsg: 'Klicken Sie die Schaltfläche.', videoSearch: 'Tour', infoLabel: 'Info', durationLabel: 'Dauer', walking: 'Zu Fuß', byCar: 'Mit dem Auto', directions: 'Route', watchVideo: 'Video ansehen', locating: 'Standort wird ermittelt...', locError: 'Standort konnte nicht ermittelt werden.', showMore: 'Mehr Orte anzeigen', noSupport: 'Ihr Browser unterstützt keine Geolokalisierung.' },
+  fr: { subtitle: 'Bienvenue au cœur de l\'histoire et de la culture', findBtn: 'Trouver les lieux proches', initialMsg: 'Cliquez sur le bouton pour commencer.', videoSearch: 'visite', infoLabel: 'Info', durationLabel: 'Durée', walking: 'À pied', byCar: 'En voiture', directions: 'Itinéraire', watchVideo: 'Regarder la vidéo', locating: 'Localisation en cours...', locError: 'Impossible d\'obtenir la localisation.', showMore: 'Afficher plus de lieux', noSupport: 'Votre navigateur ne supporte pas la géolocalisation.' },
+  es: { subtitle: 'Bienvenido al corazón de la historia y la cultura', findBtn: 'Encontrar lugares cercanos', initialMsg: 'Haga clic en el botón para comenzar.', videoSearch: 'visita', infoLabel: 'Info', durationLabel: 'Duración', walking: 'A pie', byCar: 'En coche', directions: 'Cómo llegar', watchVideo: 'Ver video', locating: 'Buscando ubicación...', locError: 'No se pudo obtener la ubicación.', showMore: 'Mostrar más lugares', noSupport: 'Su navegador no soporta geolocalización.' },
+  pt: { subtitle: 'Bem-vindo ao coração da história e da cultura', findBtn: 'Encontrar lugares próximos', initialMsg: 'Clique no botão para começar.', videoSearch: 'visita', infoLabel: 'Info', durationLabel: 'Duração', walking: 'A pé', byCar: 'De carro', directions: 'Como chegar', watchVideo: 'Assistir vídeo', locating: 'Localizando...', locError: 'Não foi possível obter a localização.', showMore: 'Mostrar mais lugares', noSupport: 'Seu navegador não suporta geolocalização.' },
+  ru: { subtitle: 'Добро пожаловать в сердце истории и культуры', findBtn: 'Найти ближайшие места', initialMsg: 'Нажмите кнопку для начала.', videoSearch: 'тур', infoLabel: 'Инфо', durationLabel: 'Время', walking: 'Пешком', byCar: 'На машине', directions: 'Маршрут', watchVideo: 'Смотреть видео', locating: 'Определение местоположения...', locError: 'Не удалось получить местоположение.', showMore: 'Показать больше мест', noSupport: 'Ваш браузер не поддерживает геолокацию.' },
+  uk: { subtitle: 'Ласкаво просимо до серця історії та культури', findBtn: 'Знайти найближчі місця', initialMsg: 'Натисніть кнопку для початку.', videoSearch: 'тур', infoLabel: 'Інфо', durationLabel: 'Час', walking: 'Пішки', byCar: 'На авто', directions: 'Маршрут', watchVideo: 'Дивитися відео', locating: 'Визначення місця...', locError: 'Не вдалося отримати місцезнаходження.', showMore: 'Показати більше місць', noSupport: 'Ваш браузер не підтримує геолокацію.' },
+  ar: { subtitle: 'مرحباً بك في قلب التاريخ والثقافة', findBtn: 'ابحث عن الأماكن القريبة', initialMsg: 'انقر على الزر للبدء.', videoSearch: 'جولة', infoLabel: 'معلومات', durationLabel: 'المدة', walking: 'مشياً', byCar: 'بالسيارة', directions: 'الاتجاهات', watchVideo: 'مشاهدة الفيديو', locating: 'جارٍ تحديد موقعك...', locError: 'تعذر الحصول على الموقع.', showMore: 'عرض المزيد من الأماكن', noSupport: 'متصفحك لا يدعم تحديد الموقع.' },
+  nl: { subtitle: 'Welkom in het hart van de geschiedenis en cultuur', findBtn: 'Vind nabijgelegen plaatsen', initialMsg: 'Klik op de knop om te beginnen.', videoSearch: 'rondleiding', infoLabel: 'Info', durationLabel: 'Duur', walking: 'Lopen', byCar: 'Met de auto', directions: 'Route', watchVideo: 'Video bekijken', locating: 'Locatie bepalen...', locError: 'Locatie kon niet worden bepaald.', showMore: 'Meer plaatsen tonen', noSupport: 'Uw browser ondersteunt geen geolocatie.' },
+  ja: { subtitle: '歴史と文化の中心へようこそ', findBtn: '近くの場所を探す', initialMsg: 'ボタンを押してください。', videoSearch: 'ツアー', infoLabel: '情報', durationLabel: '所要時間', walking: '徒歩', byCar: '車', directions: 'ルート案内', watchVideo: '動画を見る', locating: '位置情報を取得中...', locError: '位置情報を取得できませんでした。', showMore: 'もっと見る', noSupport: 'ブラウザが位置情報をサポートしていません。' },
+  zh: { subtitle: '欢迎来到历史与文化的心脏', findBtn: '查找附近地点', initialMsg: '请点击按钮开始。', videoSearch: '游览', infoLabel: '信息', durationLabel: '时长', walking: '步行', byCar: '开车', directions: '获取路线', watchVideo: '观看视频', locating: '正在定位...', locError: '无法获取位置信息。', showMore: '显示更多地点', noSupport: '您的浏览器不支持地理定位。' },
+  ko: { subtitle: '역사와 문화의 심장에 오신 것을 환영합니다', findBtn: '근처 장소 찾기', initialMsg: '버튼을 클릭하여 시작하세요.', videoSearch: '투어', infoLabel: '정보', durationLabel: '소요 시간', walking: '도보', byCar: '차량', directions: '길찾기', watchVideo: '동영상 보기', locating: '위치 확인 중...', locError: '위치를 가져올 수 없습니다.', showMore: '더 많은 장소 보기', noSupport: '브라우저가 위치 정보를 지원하지 않습니다.' },
+  hi: { subtitle: 'इतिहास और संस्कृति के दिल में आपका स्वागत है', findBtn: 'नज़दीकी स्थान खोजें', initialMsg: 'शुरू करने के लिए बटन दबाएं।', videoSearch: 'दौरा', infoLabel: 'जानकारी', durationLabel: 'समय', walking: 'पैदल', byCar: 'कार से', directions: 'रास्ता', watchVideo: 'वीडियो देखें', locating: 'स्थान खोजा जा रहा है...', locError: 'स्थान नहीं मिला।', showMore: 'अधिक स्थान दिखाएं', noSupport: 'ब्राउज़र भू-स्थान का समर्थन नहीं करता।' },
+  bn: { subtitle: 'ইতিহাস ও সংস্কৃতির হৃদয়ে স্বাগতম', findBtn: 'কাছের স্থান খুঁজুন', initialMsg: 'শুরু করতে বোতামে ক্লিক করুন।', videoSearch: 'ভ্রমণ', infoLabel: 'তথ্য', durationLabel: 'সময়', walking: 'হেঁটে', byCar: 'গাড়িতে', directions: 'পথ দেখান', watchVideo: 'ভিডিও দেখুন', locating: 'অবস্থান খোঁজা হচ্ছে...', locError: 'অবস্থান পাওয়া যায়নি।', showMore: 'আরো স্থান দেখুন', noSupport: 'ব্রাউজার জিওলোকেশন সমর্থন করে না।' },
+  id: { subtitle: 'Selamat datang di jantung sejarah dan budaya', findBtn: 'Temukan tempat terdekat', initialMsg: 'Klik tombol untuk memulai.', videoSearch: 'tur', infoLabel: 'Info', durationLabel: 'Durasi', walking: 'Berjalan kaki', byCar: 'Berkendara', directions: 'Petunjuk Arah', watchVideo: 'Tonton Video', locating: 'Mencari lokasi...', locError: 'Lokasi tidak dapat ditemukan.', showMore: 'Tampilkan lebih banyak tempat', noSupport: 'Browser tidak mendukung geolokasi.' },
+  kk: { subtitle: 'Тарих пен мәдениет жүрегіне қош келдіңіз', findBtn: 'Жақын жерлерді табыңыз', initialMsg: 'Бастау үшін батырманы басыңыз.', videoSearch: 'экскурсия', infoLabel: 'Ақпарат', durationLabel: 'Уақыт', walking: 'Жаяу', byCar: 'Көлікпен', directions: 'Бағыт', watchVideo: 'Бейне көру', locating: 'Орын анықталуда...', locError: 'Орынды алу мүмкін болмады.', showMore: 'Көбірек орын көрсету', noSupport: 'Браузер геолокацияны қолдамайды.' },
+  uz: { subtitle: 'Tarix va madaniyat yuragiga xush kelibsiz', findBtn: 'Yaqin joylarni toping', initialMsg: 'Boshlash uchun tugmani bosing.', videoSearch: 'sayohat', infoLabel: 'Ma\'lumot', durationLabel: 'Vaqt', walking: 'Piyoda', byCar: 'Avtomobilda', directions: 'Yo\'l ko\'rsatish', watchVideo: 'Video ko\'rish', locating: 'Joylashuv aniqlanmoqda...', locError: 'Joylashuvni olish imkoni bo\'lmadi.', showMore: 'Ko\'proq joy ko\'rsatish', noSupport: 'Brauzer geolokatsiyani qo\'llab-quvvatlamaydi.' },
+  az: { subtitle: 'Tarixin və mədəniyyətin ürəyinə xoş gəlmisiniz', findBtn: 'Yaxın yerləri tapın', initialMsg: 'Başlamaq üçün düyməni basın.', videoSearch: 'ekskursiya', infoLabel: 'Məlumat', durationLabel: 'Vaxt', walking: 'Piyada', byCar: 'Avtomobillə', directions: 'Marşrut', watchVideo: 'Video izlə', locating: 'Yer müəyyən edilir...', locError: 'Yer tapılmadı.', showMore: 'Daha çox yer göstər', noSupport: 'Brauzer geolokasiyaya dəstək vermir.' }
 };
 const browserLang = (navigator.language || 'tr').slice(0,2);
 let currentLang = i18n[browserLang] ? browserLang : 'tr';
@@ -32,6 +33,10 @@ function setLang(lang) {
   document.documentElement.lang = lang;
   // RTL dil desteği (Arapça)
   document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  // Kartlar zaten gösterilmişse yeniden render et
+  if (lastUserLat !== null && lastUserLng !== null) {
+    displayPlaces(lastUserLat, lastUserLng);
+  }
 }
 
 // === MEKANLAR ===
@@ -154,10 +159,11 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
 }
 
 function formatTime(minutes) {
-  if (minutes < 60) return minutes + ' dk';
+  // Use short time units (min/h) consistent across languages
+  if (minutes < 60) return minutes + ' min';
   const h = Math.floor(minutes / 60);
   const m = minutes % 60;
-  return m > 0 ? h + ' sa ' + m + ' dk' : h + ' sa';
+  return m > 0 ? h + 'h ' + m + 'min' : h + 'h';
 }
 
 // === KART OLUŞTUR ===
@@ -189,14 +195,14 @@ function createCard(p, uLat, uLng) {
     <div class="place-content">
       <div class="content-inner">
         ${imgHtml}
-        <p><strong>ℹ️ Bilgi:</strong> ${desc}</p>
-        <p><strong>🚶 Süre:</strong> Yürüyerek ${formatTime(walkMin)} / Araçla ${formatTime(driveMin)}</p>
+        <p><strong>ℹ️ ${t('infoLabel')}:</strong> ${desc}</p>
+        <p><strong>🚶 ${t('durationLabel')}:</strong> ${t('walking')} ${formatTime(walkMin)} / ${t('byCar')} ${formatTime(driveMin)}</p>
         <div class="action-links">
           <a class="btn-nav" href="${mapLink}" target="_blank">
-            <i class="fa-solid fa-map-location-dot"></i> Yol Tarifi
+            <i class="fa-solid fa-map-location-dot"></i> ${t('directions')}
           </a>
           <a class="btn-video" href="${videoLink}" target="_blank">
-            <i class="fa-brands fa-youtube"></i> Video İzle
+            <i class="fa-brands fa-youtube"></i> ${t('watchVideo')}
           </a>
         </div>
       </div>
@@ -223,7 +229,6 @@ function createCard(p, uLat, uLng) {
 }
 
 // === MEKAN LİSTESİNİ GÖSTER ===
-let lastUserLat = null, lastUserLng = null;
 
 function displayPlaces(uLat, uLng) {
   lastUserLat = uLat;
@@ -242,7 +247,7 @@ function displayPlaces(uLat, uLng) {
   if (sorted.length > INITIAL) {
     const btn = document.createElement('button');
     btn.className = 'show-more-btn';
-    btn.innerHTML = `&#8964; Daha Fazla Mekan Göster (${sorted.length - INITIAL})`;
+    btn.innerHTML = `&#8964; ${t('showMore')} (${sorted.length - INITIAL})`;
     btn.addEventListener('click', () => {
       sorted.slice(INITIAL).forEach(p => {
         list.insertBefore(createCard(p, uLat, uLng), btn);
@@ -256,9 +261,9 @@ function displayPlaces(uLat, uLng) {
 // === KONUM BUTONU ===
 document.getElementById('getLocation').addEventListener('click', () => {
   const list = document.getElementById('placesList');
-  list.innerHTML = '<div class="initial-message"><i class="fa-solid fa-spinner fa-spin"></i> Konumunuz bulunuyor...</div>';
+  list.innerHTML = `<div class="initial-message"><i class="fa-solid fa-spinner fa-spin"></i> ${t('locating')}</div>`;
   if (!navigator.geolocation) {
-    alert('Tarayıcınız konum özelliğini desteklemiyor.');
+    alert(t('noSupport'));
     return;
   }
   navigator.geolocation.getCurrentPosition(
@@ -267,7 +272,7 @@ document.getElementById('getLocation').addEventListener('click', () => {
       displayPlaces(pos.coords.latitude, pos.coords.longitude);
     },
     () => {
-      list.innerHTML = '<div class="initial-message" style="color:#DC2626">Konum alınamadı. Lütfen konum iznini kontrol edin.</div>';
+      list.innerHTML = `<div class="initial-message" style="color:#DC2626">${t('locError')}</div>`;
     }
   );
 });
